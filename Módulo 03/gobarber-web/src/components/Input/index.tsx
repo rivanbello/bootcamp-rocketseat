@@ -57,7 +57,7 @@ export const Input: React.FC<InputProps> = ({ name, icon: Icon, ...rest }) => {
 
       {error && (
         <Error title={error}>
-          <FiAlertCircle />
+          <FiAlertCircle size={20} color="#c53030" />
         </Error>
       )}
     </Container>
