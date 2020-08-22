@@ -16,8 +16,6 @@ export default class UserAvatarController {
         avatarFilename: request.file.filename,
       });
 
-      delete user.password;
-
       return response.json(classToClass(user));
     } catch (error) {
       return response.status(400).json({ error: error.message });

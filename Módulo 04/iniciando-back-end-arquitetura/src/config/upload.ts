@@ -47,4 +47,4 @@ export default {
       bucket: 'app-gobarber-rivan',
     },
   },
-};
+} as IUploadConfig;
