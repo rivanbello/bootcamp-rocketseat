@@ -20,8 +20,8 @@ class SendForgotPasswordEmailService {
     @inject('MailProvider')
     private mailProvider: IMailProvider,
 
-    @inject('UserTokensRepository')
-    private userTokensRepository: IUserTokenRepository,
+    @inject('UserTokenRepository')
+    private userTokenRepository: IUserTokenRepository,
   ) {}
 
   public async execute({ email }: IRequest): Promise<void> {
@@ -31,9 +31,9 @@ class SendForgotPasswordEmailService {
       throw new AppError('User does not exist.');
     }
 
-    const { token } = await this.userTokensRepository.generate(user.id);
+    const { token } = await this.userTokenRepository.generate(user.id);
 
-    const forgotPassowordTemplate = path.resolve(
+    const forgotPasswordTemplate = path.resolve(
       __dirname,
       '..',
       'views',
@@ -47,7 +47,7 @@ class SendForgotPasswordEmailService {
       },
       subject: '[Go Barber]Recuperação de senha.',
       templateData: {
-        file: forgotPassowordTemplate,
+        file: forgotPasswordTemplate,
         variables: {
           name: user.name,
           link: `${process.env.APP_WEB_URL}/reset_password?token=${token}`,

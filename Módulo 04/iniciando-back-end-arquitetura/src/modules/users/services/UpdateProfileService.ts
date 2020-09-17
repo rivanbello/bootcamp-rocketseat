@@ -20,8 +20,8 @@ class UpdateProfileService {
     @inject('UsersRepository')
     private usersRepository: IUsersRepository,
 
-    @inject('HashProiver')
-    private hashProiver: IHashProvider,
+    @inject('HashProvider')
+    private hashProvider: IHashProvider,
   ) {}
 
   public async execute({
@@ -40,7 +40,7 @@ class UpdateProfileService {
     const userWithUpdatedEmail = await this.usersRepository.findByEmail(email);
 
     if (userWithUpdatedEmail && userWithUpdatedEmail.id !== user_id) {
-      throw new AppError('E-mail alredy in use.');
+      throw new AppError('E-mail already in use.');
     }
 
     user.name = name;
@@ -53,7 +53,7 @@ class UpdateProfileService {
     }
 
     if (password && old_password) {
-      const checkOldPassword = await this.hashProiver.compareHash(
+      const checkOldPassword = await this.hashProvider.compareHash(
         old_password,
         user.password,
       );
@@ -62,7 +62,7 @@ class UpdateProfileService {
         throw new AppError('Old password does not match.');
       }
 
-      user.password = await this.hashProiver.generateHash(password);
+      user.password = await this.hashProvider.generateHash(password);
     }
 
     return this.usersRepository.save(user);
